@@ -106,6 +106,44 @@ There are no stalls with forwarding.
   \caption{With hazard detection; With forwarding;}
 \end{figure}
 
+\subsection{}
+\subsubsection*{Initial Code}
+\begin{verbatim}
+.text
+
+main:
+    addi s0 zero 5
+    add s1 s0 zero
+    addi s2 zero 6
+    addi s3 zero 7
+\end{verbatim}
+
+\subsubsection*{Optimized Code}
+\begin{verbatim}
+.text
+
+main:
+    addi s0 zero 5
+    addi s2 zero 6
+    addi s3 zero 7
+    add s1 s0 zero
+\end{verbatim}
+
+\subsubsection*{Behaviour}
+At the end of both the program, we expect registers \verb!s0! and \verb!s1! to have value 5, register \verb!s2! to have value 6 and, register \verb!s3! to have value 6.
+
+\subsubsection*{Screenshots}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.25]{Q2/b_init_hnf_end_pipeline.png}
+  \caption{With hazard detection; Without forwarding; Initial code}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.25]{Q2/b_opt_hnf_end_pipeline.png}
+  \caption{With hazard detection; With forwarding; Optimized code}
+\end{figure}
+
 
 
 \end{document}
