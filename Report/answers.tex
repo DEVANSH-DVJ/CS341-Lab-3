@@ -172,5 +172,22 @@ The value stored in \verb!opcode_exec_out! datapath after 4 cycles is \verb!0x13
   \caption{6-stage dual-issue processor}
 \end{figure}
 
+\subsection{}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.22]{Q3/hf_pipeline.png}
+  \caption{With hazard detection; With forwarding; \textbf{Takes 14 cycles}}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.22]{Q3/hnf_pipeline.png}
+  \caption{With hazard detection; Without forwarding; \textbf{Takes 19 cycles}}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.22]{Q3/6di_pipeline.png}
+  \caption{6-stage dual-issue processor; \textbf{Takes 13 cycles}}
+\end{figure}
+
 
 \end{document}
