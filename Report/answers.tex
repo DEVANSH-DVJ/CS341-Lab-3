@@ -145,5 +145,32 @@ At the end of both the program, we expect registers \verb!s0! and \verb!s1! to h
 \end{figure}
 
 
+\newpage
+\section{Stalls and Forwarding}
+
+\subsection{}
+Address input of data memory and EX/MEM pipeline after 4th cycle is \verb!0x0000000a!.
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.22]{Q3/hf_datapath.png}
+  \caption{With hazard detection; With forwarding;}
+\end{figure}
+
+\subsection{}
+R2 idx input of registers block and decoder after 10th cycle is \verb!0x01!.
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.22]{Q3/hnf_datapath.png}
+  \caption{With hazard detection; Without forwarding;}
+\end{figure}
+
+\subsection{}
+The value stored in \verb!opcode_exec_out! datapath after 4 cycles is \verb!0x13!.
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.22]{Q3/6di_datapath.png}
+  \caption{6-stage dual-issue processor}
+\end{figure}
+
 
 \end{document}
