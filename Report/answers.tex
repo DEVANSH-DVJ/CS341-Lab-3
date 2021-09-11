@@ -13,6 +13,7 @@
 \usepackage[export]{adjustbox}
 \usepackage{sectsty}
 % \sectionfont{\centering}
+\renewcommand*{\thesubsection}{\alph{subsection}.}
 
 \usepackage[dvipsnames]{xcolor}
 \usepackage[perpage]{footmisc}
@@ -52,7 +53,7 @@ main:
 \end{verbatim}
 
 \subsubsection*{Behaviour}
-Expectations: At the end of the program, we expect registers \verb!s0! and \verb!s1! to have value 5. \\
+Expectation: At the end of the program, we expect registers \verb!s0! and \verb!s1! to have value 5. \\
 Reality: At the end of the program, only register \verb!s0! has value 5. (\verb!s1! is default to 0)
 
 \subsubsection*{Explanation}
@@ -73,6 +74,38 @@ The value read here is not updated yet causing the incorrect computation.
   \includegraphics[scale=0.25]{Q1/hnf_end_editor.png}
   \caption{With hazard detection; Without forwarding;}
 \end{figure}
+
+
+\newpage
+\section{5 Stage, without forwarding, with hazard detection}
+
+\subsection{}
+\subsubsection*{Code}
+\begin{verbatim}
+.text
+
+main:
+    addi s0 zero 5
+    add s1 s0 zero
+\end{verbatim}
+
+\subsubsection*{Behaviour}
+At the end of the program, we expect registers \verb!s0! and \verb!s1! to have value 5. \\
+Without forwarding, we observe that ID for second instruction takes 3 cycles (2 stalls). \\
+There are no stalls with forwarding.
+
+\subsubsection*{Screenshots}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.25]{Q2/a_hnf_end_pipeline.png}
+  \caption{With hazard detection; Without forwarding;}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.25]{Q2/a_hf_end_pipeline.png}
+  \caption{With hazard detection; With forwarding;}
+\end{figure}
+
 
 
 \end{document}
