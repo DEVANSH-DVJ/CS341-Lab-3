@@ -40,5 +40,39 @@
 \setcounter{page}{0}
 
 \newpage
+\section{5 Stage, without forwarding or hazard detection}
+
+\subsubsection*{Code}
+\begin{verbatim}
+.text
+
+main:
+    addi s0 zero 5
+    add s1 s0 zero
+\end{verbatim}
+
+\subsubsection*{Behaviour}
+Expectations: At the end of the program, we expect registers \verb!s0! and \verb!s1! to have value 5. \\
+Reality: At the end of the program, only register \verb!s0! has value 5. (\verb!s1! is default to 0)
+
+\subsubsection*{Explanation}
+The incorrect value is due to data hazard. \\
+To be more specific, we face a \textbf{read-before-write (RAW) data hazard}. \\
+\verb!addi s0 zero 5! writes to register \verb!s0! in WB stage during 4th cycle. \\
+\verb!add s1 s0 zero! reads from register \verb!s0! in ID stage during 2nd cycle. \\
+The value read here is not updated yet causing the incorrect computation.
+
+\subsubsection*{Screenshots}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.2]{Q1/1_nhnf_end_editor.png}
+  \caption{Without hazard detection; Without forwarding;}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.2]{Q1/1_hnf_end_editor.png}
+  \caption{With hazard detection; Without forwarding;}
+\end{figure}
+
 
 \end{document}
