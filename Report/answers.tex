@@ -189,5 +189,42 @@ The value stored in \verb!opcode_exec_out! datapath after 4 cycles is \verb!0x13
   \caption{6-stage dual-issue processor; \textbf{Takes 13 cycles}}
 \end{figure}
 
+\subsection{}
+The major issue is that the value of register \verb!a7! is not updated before \verb!ecall! reaches ID stage. There is no system call with \verb!a7! as 0, so an error occurs. \\
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.22]{Q3/nhf_error_init.png}
+  \caption{Without hazard detection; With forwarding; Error}
+\end{figure}
+
+One simple solution is to add \verb!nop!s before \verb!ecall!. \\
+If we add two \verb!nop!s, the error goes away but we end up with output 0 instead of 17. \\
+This happens because the value of register \verb!a0! is not updated before \verb!ecall! sends to signal to the console. \\
+If we add one more \verb!nop!, the output is 17. \\
+
+Updated code:
+\begin{verbatim}
+.text
+
+main:
+    li t0 2
+    li t1 10
+    add t0 t0 t1
+    li t2 5
+    add t2 t0 t2
+    li a7 1
+    add a0 t2 x0
+    nop
+    nop
+    nop
+    ecall
+\end{verbatim}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.22]{Q3/nhf_console_fixed.png}
+  \caption{Without hazard detection; With forwarding; Fixed bug; \textbf{Takes 15 cycles}}
+\end{figure}
+
 
 \end{document}
