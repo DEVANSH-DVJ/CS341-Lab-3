@@ -226,5 +226,73 @@ main:
   \caption{Without hazard detection; With forwarding; Fixed bug; \textbf{Takes 15 cycles}}
 \end{figure}
 
+\newpage
+\section{Maximising Efficiency}
+
+\subsubsection*{Code}
+\begin{verbatim}
+.text
+
+main:
+    li a0 1
+    li a7 1
+    li a1 2
+    li a6 3
+    add a0 a0 a7
+    li a7 5
+    add a1 a1 a6
+    li a6 8
+    add a0 a0 a7
+    li a7 13
+    add a1 a1 a6
+    li a6 21
+    add a0 a0 a7
+    li a7 34
+    add a1 a1 a6
+    li a6 55
+    add a0 a0 a7
+    li a7 1
+    add a1 a1 a6
+    add a0 a0 a1
+    ecall
+\end{verbatim}
+
+\subsubsection*{Behaviour}
+Output is $1+1+2+3+5+8+13+21+34+55 = 134$. \\
+Minimum of 29 cycles are required. \\
+Minimum of 4 registers are required to finish in 29 cycles.
+
+\subsubsection*{Explanation for minimum cycles}
+We require 10 \verb!li! instructions and at least 9 \verb!add! instructions (to add 10 integers). \\
+Then there are two more instructions - one \verb!li! instruction to set \verb!a7! register to 1 and one \verb!ecall! instruction to output on console. \\
+Without stalls, it would take minimum of 25 cycles (21 + 4). \\
+
+Read of a particular register requires 2 instructions after previous write operation to the register in order to avoid stalls. \\
+
+We can have one temporary variable storing the sum. \\
+This would require updating the variable only after reading two integers, which would cause consecutive additions once we have read all integers. ($\sim 10$ stalls for this). \\
+
+Instead we can use two temporary variables for storing partial sum and then add them at the end to obtain the sum. \\
+This way we can update the variables alternatively after reading an integer. \\
+This would cause two stalls at the end when we would have to add the two variables just after updating one of the variables. \\
+
+For more than two temporary variables, the number of stalls at the end to obtain the sum would only increase. \\
+
+In addition to this, we would have another two stalls during \verb!ecall! instruction. \\
+This for some reason seems to be inevitable even after including \verb!nop!s.
+
+\subsubsection*{Explanation for minimum registers}
+We read 4 integers before first sum as we would be adding first two integers and we need a gap of two instructions before we can add without stall. \\
+During the flow, we require 2 registers to store partial sum and 2 registers to store integer input. \\
+For the syscall, we would require \verb!a0! and \verb!a7! registers. \\
+With proper arrangement we can satisfy our need with only 4 registers without adding anymore stalls. \\
+\verb!a0! and \verb!a1! store partial sum. \\
+\verb!a7! and \verb!a6! store integer input. \\
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.22]{Q4/hnf_pipeline.png}
+  \caption{With hazard detection; Without forwarding; \textbf{Requires 29 cycles and 4 registers}}
+\end{figure}
 
 \end{document}
